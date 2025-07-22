@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/Hordevcom/GameShelf/internal/config"
 	"github.com/Hordevcom/GameShelf/internal/handlers"
 	"github.com/Hordevcom/GameShelf/internal/middleware/logging"
 	"github.com/Hordevcom/GameShelf/internal/routes"
@@ -11,13 +12,14 @@ import (
 
 func Run() {
 	logger := logging.NewLogger()
-	storage := storage.NewStorage()
+	config := config.NewConfig(logger)
+	storage := storage.NewStorage(config, logger)
 	service := services.NewService(*storage)
 	handlers := handlers.NewHandler(*service, *logger)
 
 	routes := routes.NewRouter(handlers, logger)
 
-	server := server.NewServer(routes)
+	server := server.NewServer(routes, config)
 
 	logger.Info("Start server")
 	server.ListenAndServe()

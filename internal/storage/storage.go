@@ -2,26 +2,29 @@ package storage
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/Hordevcom/GameShelf/internal/config"
+	"github.com/Hordevcom/GameShelf/internal/middleware/logging"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type PGDB struct {
-	DB *pgxpool.Pool
+	DB     *pgxpool.Pool
+	Conf   config.Config
+	Logger *logging.Logger
 }
 
-func NewStorage() *PGDB {
-	db, err := pgxpool.New(context.Background(), "postgres://postgres:1@localhost:5432/postgres")
+func NewStorage(Conf config.Config, Logger *logging.Logger) *PGDB {
+	db, err := pgxpool.New(context.Background(), Conf.DatabaseDsn)
 
 	if err != nil {
-		fmt.Println("Problem with connection to db: ", err)
+		Logger.Error("Problem with connection to db: ", err)
 		return nil
 	}
 
 	err = db.Ping(context.Background())
 	if err != nil {
-		fmt.Println("Problem with ping to db: ", err)
+		Logger.Error("Problem with ping to db: ", err)
 		return nil
 	}
 
