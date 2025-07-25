@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Hordevcom/GameShelf/internal/middleware/logging"
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -56,9 +57,11 @@ func GetUsername(tokenString string) string {
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logger := logging.NewLogger()
 		_, err := r.Cookie("token")
 
 		if err != nil {
+			logger.Error("error with auth: ", err)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}

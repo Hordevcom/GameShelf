@@ -11,6 +11,5 @@ type Handler struct {
 }
 
 func NewHandler(service services.Service, logger logging.Logger) *Handler {
-	return &Handler{Services: &service,
-		Logger: &logger}
+	return &Handler{Services: &service, Logger: &logger}
 }
