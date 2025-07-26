@@ -7,6 +7,14 @@ BEGIN
     END IF;
 END
 $$;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'game_store') THEN
+        CREATE TYPE game_store AS ENUM ('steam', 'epic_store', 'xbox',
+         'playstation', 'nintendo', 'microsoft_store');
+    END IF;
+END
+$$;
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
@@ -22,11 +30,12 @@ CREATE TABLE IF NOT EXISTS games (
 
 CREATE TABLE IF NOT EXISTS user_games (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    username TEXT NOT NULL REFERENCES users(username) ON DELETE CASCADE,
     game_title TEXT NOT NULL REFERENCES games(title) ON DELETE CASCADE,
     game_status game_status NOT NULL,
+    game_store game_store NOT NULL,
     updated_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(user_id, game_title)
+    UNIQUE(username, game_title)
 );
 -- +goose StatementEnd
 

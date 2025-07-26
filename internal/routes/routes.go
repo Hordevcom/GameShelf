@@ -15,6 +15,7 @@ func NewRouter(h *handlers.Handler, log *logging.Logger) *chi.Mux {
 	router.Post("/api/user/register", h.UserRegister())
 	router.Post("/api/user/login", h.Login())
 	router.With(auth.AuthMiddleware).Post("/api/games", h.AddNewGame())
+	router.With(auth.AuthMiddleware).Post("/api/users/games", h.AddGameToUser())
 
 	return router
 }

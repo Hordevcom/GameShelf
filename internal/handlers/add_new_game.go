@@ -41,7 +41,7 @@ func (h *Handler) AddNewGame() http.HandlerFunc {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		render.JSON(w, r, map[string]string{"message": "Game added to library"})
+		render.JSON(w, r, map[string]string{"message": "Game added to server library"})
 
 	}
 }
