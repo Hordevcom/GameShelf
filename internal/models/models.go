@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type UserAuth struct {
 	Username string `json:"login"`
 	Password string `json:"password,omitempty"`
@@ -21,4 +23,16 @@ type UserGame struct {
 	GameTitle  string
 	GameStatus string
 	GameStore  string
+}
+
+type UserGames struct {
+	GameTitle  string    `json:"title"`
+	GameStatus string    `json:"status"`
+	GameStore  string    `json:"store"`
+	AddedAt    time.Time `json:"added_at"`
+}
+
+type UserGameUpdate struct {
+	GameTitle  string `json:"title"`
+	GameStatus string `json:"status"`
 }

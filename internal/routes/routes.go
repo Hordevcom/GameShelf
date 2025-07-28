@@ -16,6 +16,8 @@ func NewRouter(h *handlers.Handler, log *logging.Logger) *chi.Mux {
 	router.Post("/api/user/login", h.Login())
 	router.With(auth.AuthMiddleware).Post("/api/games", h.AddNewGame())
 	router.With(auth.AuthMiddleware).Post("/api/users/games", h.AddGameToUser())
+	router.With(auth.AuthMiddleware).Patch("/api/games/status", h.UpdateGameStatus())
+	router.With(auth.AuthMiddleware).Get("/api/users/{username}/games", h.GetUserGames())
 
 	return router
 }
